@@ -25,7 +25,15 @@ RPM_NAME="WorkBuddy-linux-x64-rpm-5.6.2.40046327-c7b525f3.rpm"
 RPM=${RPM:-$HERE/$RPM_NAME}
 WORKBUDDY_RPM_URL=${WORKBUDDY_RPM_URL:-https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/$RPM_NAME}
 
-export FLATPAK_USER_DIR=${FLATPAK_USER_DIR:-$HOME/.local/share/flatpak}
+# 安装域：CI 容器里用系统级（与预装 runtime 一致），本地默认用户级
+SCOPE=${FLATPAK_SCOPE:-user}
+if [ "$SCOPE" = "system" ]; then
+  FP_ARGS=""
+  FLATPAK_USER_DIR=""
+else
+  FP_ARGS="--user"
+  export FLATPAK_USER_DIR=${FLATPAK_USER_DIR:-$HOME/.local/share/flatpak}
+fi
 
 blue() { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33m!!\033[0m %s\n' "$*" >&2; }
@@ -37,20 +45,27 @@ for c in flatpak flatpak-builder rpm2cpio cpio; do
 done
 
 # ---------------------------------------------------------------- runtime
+# shellcheck disable=SC2086
 if [ "${SKIP_DEPS:-0}" != "1" ]; then
-  if ! flatpak remotes --user --columns=name 2>/dev/null | grep -qx flathub; then
-    blue "添加用户级 flathub 仓库"
-    flatpak remote-add --user --if-not-exists flathub \
+  if ! flatpak remotes $FP_ARGS --columns=name 2>/dev/null | grep -qx flathub; then
+    blue "添加 flathub 仓库 ($SCOPE)"
+    flatpak remote-add $FP_ARGS --if-not-exists flathub \
       https://dl.flathub.org/repo/flathub.flatpakrepo
   fi
 
+  # 任一处已安装即可复用（CI 镜像常预装在系统级）
   need() {
     ref="$1"
-    if flatpak info "$ref" >/dev/null 2>&1 || flatpak info --user "$ref" >/dev/null 2>&1; then
+    if flatpak info "$ref" >/dev/null 2>&1; then
+      blue "已安装(系统)：$ref"
+      return 0
+    fi
+    if flatpak info --user "$ref" >/dev/null 2>&1; then
+      blue "已安装(用户)：$ref"
       return 0
     fi
     blue "安装 runtime: $ref"
-    flatpak install --user -y --noninteractive flathub "$ref"
+    flatpak install $FP_ARGS -y --noninteractive flathub "$ref"
   }
   need "org.freedesktop.Platform/x86_64/$RV"
   need "org.freedesktop.Sdk/x86_64/$RV"
@@ -97,11 +112,13 @@ chmod 0755 "$SRC_DIR/app/workbuddy" "$SRC_DIR/app/chrome_crashpad_handler" 2>/de
 mkdir -p "$REPO"
 blue "开始构建（源码约 1.7GB，视机器性能约 5-15 分钟）"
 rm -rf "$BUILD_DIR"
+# shellcheck disable=SC2086
 flatpak-builder \
-  --user \
+  $FP_ARGS \
   --arch=x86_64 \
   --force-clean \
   --disable-rofiles-fuse \
+  --install-deps-from=flathub \
   --repo="$REPO" \
   --state-dir="$HERE/.flatpak-builder" \
   "$BUILD_DIR" \

@@ -38,8 +38,14 @@ jobs:
 
       - name: 安装打包依赖
         run: |
-          apt-get update -qq
-          apt-get install -y -qq rpm2cpio cpio
+          # 该镜像基于 Fedora（flatpak-builder-lint），没有 apt
+          if command -v dnf >/dev/null 2>&1; then
+            dnf install -y -q rpm2cpio cpio xz curl file
+          elif command -v apt-get >/dev/null 2>&1; then
+            apt-get update -qq && apt-get install -y -qq rpm2cpio cpio xz-utils curl file
+          fi
+          rpm2cpio --version | head -1 || rpm2cpio </dev/null >/dev/null 2>&1 || true
+          cpio --version | head -1
 
       - name: 缓存 RPM 源包
         id: cache-rpm
@@ -78,13 +84,9 @@ jobs:
 
       - name: 构建
         env:
-          SKIP_DEPS: 1
+          FLATPAK_SCOPE: system
           RPM: ${{ github.workspace }}/.cache-rpm/workbuddy.rpm
-          FLATPAK_USER_DIR: ${{ github.workspace }}/.flatpak-user
-        run: |
-          # 容器内 flatpak 需要能写自己的安装目录
-          mkdir -p "$FLATPAK_USER_DIR"
-          ./build.sh
+        run: ./build.sh
 
       - name: 打包成单文件 .flatpak
         run: |
@@ -98,34 +100,32 @@ jobs:
 
       - name: 冒烟测试（校验安装后的文件布局）
         run: |
-          export FLATPAK_USER_DIR="$PWD/.flatpak-user"
-          flatpak remote-add --user --if-not-exists --no-gpg-verify local "file://$PWD/repo"
-          flatpak install --user -y --noninteractive --reinstall local "$APP_ID"
+          flatpak remote-add --if-not-exists --no-gpg-verify local "file://$PWD/repo"
+          flatpak install -y --noninteractive --reinstall local "$APP_ID"
 
-          APP_ROOT="$FLATPAK_USER_DIR/app/$APP_ID/current/active"
+          APP_ROOT="$(flatpak info --show-location "$APP_ID")/files"
+          echo "APP_ROOT=$APP_ROOT"
           echo "--- 应用信息 ---"
-          flatpak info --user "$APP_ID" | head -20
+          flatpak info "$APP_ID" | head -20
 
           echo "--- 关键文件校验 ---"
+          fail=0
           for f in \
-            "$APP_ROOT/files/extra/WorkBuddy/workbuddy" \
-            "$APP_ROOT/files/extra/WorkBuddy/resources/app.asar" \
-            "$APP_ROOT/files/extra/WorkBuddy/resources/app.asar.unpacked/cli/bin/codebuddy" \
-            "$APP_ROOT/files/extra/WorkBuddy/resources/runtime/node/bin/node" \
-            "$APP_ROOT/files/bin/workbuddy" \
-            "$APP_ROOT/files/share/applications/$APP_ID.desktop" \
-            "$APP_ROOT/files/share/metainfo/$APP_ID.metainfo.xml" \
-            "$APP_ROOT/files/share/icons/hicolor/512x512/apps/$APP_ID.png" ; do
-            if [ -e "$f" ]; then
-              echo "  OK   $f"
-            else
-              echo "  MISS $f"; exit 1
-            fi
+            "$APP_ROOT/extra/WorkBuddy/workbuddy" \
+            "$APP_ROOT/extra/WorkBuddy/resources/app.asar" \
+            "$APP_ROOT/extra/WorkBuddy/resources/app.asar.unpacked/cli/bin/codebuddy" \
+            "$APP_ROOT/extra/WorkBuddy/resources/runtime/node/bin/node" \
+            "$APP_ROOT/bin/workbuddy" \
+            "$APP_ROOT/share/applications/$APP_ID.desktop" \
+            "$APP_ROOT/share/metainfo/$APP_ID.metainfo.xml" \
+            "$APP_ROOT/share/icons/hicolor/512x512/apps/$APP_ID.png" ; do
+            if [ -e "$f" ]; then echo "  OK   $f"; else echo "  MISS $f"; fail=1; fi
           done
+          [ "$fail" = "0" ] || exit 1
 
           echo "--- 可执行位 ---"
-          test -x "$APP_ROOT/files/extra/WorkBuddy/workbuddy" || { echo "主程序不可执行"; exit 1; }
-          test -x "$APP_ROOT/files/bin/workbuddy"            || { echo "启动器不可执行"; exit 1; }
+          test -x "$APP_ROOT/extra/WorkBuddy/workbuddy" || { echo "主程序不可执行"; exit 1; }
+          test -x "$APP_ROOT/bin/workbuddy"              || { echo "启动器不可执行"; exit 1; }
           echo "通过"
 
       - name: 上传构建产物
