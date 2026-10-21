@@ -120,6 +120,7 @@ flatpak-builder \
   --default-branch=stable \
   --disable-rofiles-fuse \
   --install-deps-from=flathub \
+  --keep=extra \
   --repo="$REPO" \
   --state-dir="$HERE/.flatpak-builder" \
   "$BUILD_DIR" \

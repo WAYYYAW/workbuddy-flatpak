@@ -1,0 +1,697 @@
+﻿2026-10-21T14:51:11.1898171Z Current runner version: '2.338.0'
+2026-10-21T14:51:11.1923946Z ##[group]Runner Image Provisioner
+2026-10-21T14:51:11.1925048Z Hosted Compute Agent
+2026-10-21T14:51:11.1925702Z Version: 20261015.610
+2026-10-21T14:51:11.1926860Z Commit: 267fdb4e8bbec4ab5ea31367f3a00d5c480c7656
+2026-10-21T14:51:11.1927659Z Build Date: 2026-10-14T17:06:54Z
+2026-10-21T14:51:11.1928417Z Worker ID: {9319295c-3337-4dd2-9ffe-bb1bcd0d7877}
+2026-10-21T14:51:11.1929166Z Region: eastus
+2026-10-21T14:51:11.1929764Z Cloud: Azure
+2026-10-21T14:51:11.1930358Z ##[endgroup]
+2026-10-21T14:51:11.1931922Z ##[group]Operating System
+2026-10-21T14:51:11.1932567Z Ubuntu
+2026-10-21T14:51:11.1933205Z 24.04.5
+2026-10-21T14:51:11.1934132Z LTS
+2026-10-21T14:51:11.1934793Z ##[endgroup]
+2026-10-21T14:51:11.1935382Z ##[group]Runner Image
+2026-10-21T14:51:11.1935992Z Image: ubuntu-24.04
+2026-10-21T14:51:11.1936639Z Version: 20261018.339.1
+2026-10-21T14:51:11.1937937Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261018.339/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-21T14:51:11.1939639Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261018.339
+2026-10-21T14:51:11.1940668Z ##[endgroup]
+2026-10-21T14:51:11.1941974Z ##[group]GITHUB_TOKEN Permissions
+2026-10-21T14:51:11.1944441Z Contents: read
+2026-10-21T14:51:11.1945109Z Metadata: read
+2026-10-21T14:51:11.1945693Z Packages: read
+2026-10-21T14:51:11.1946327Z ##[endgroup]
+2026-10-21T14:51:11.1948463Z Secret source: Actions
+2026-10-21T14:51:11.1949560Z Cache mode: write
+2026-10-21T14:51:11.1950552Z Prepare workflow directory
+2026-10-21T14:51:11.2525308Z Prepare all required actions
+2026-10-21T14:51:11.2575725Z Getting action download info
+2026-10-21T14:51:11.4921770Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-21T14:51:11.6080058Z Download action repository 'actions/cache@v4' (SHA:0057852bfaa89a56745cba8c7296529d2fc39830)
+2026-10-21T14:51:11.7061151Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-21T14:51:11.9282330Z Complete job name: Build .flatpak
+2026-10-21T14:51:11.9806077Z ##[group]Checking docker version
+2026-10-21T14:51:11.9819728Z ##[command]/usr/bin/docker version --format '{{.Server.APIVersion}}'
+2026-10-21T14:51:12.0806592Z '1.48'
+2026-10-21T14:51:12.0828161Z Docker daemon API version: '1.48'
+2026-10-21T14:51:12.0829060Z ##[command]/usr/bin/docker version --format '{{.Client.APIVersion}}'
+2026-10-21T14:51:12.1034554Z '1.48'
+2026-10-21T14:51:12.1051539Z Docker client API version: '1.48'
+2026-10-21T14:51:12.1057740Z ##[endgroup]
+2026-10-21T14:51:12.1061455Z ##[group]Clean up resources from previous jobs
+2026-10-21T14:51:12.1067321Z ##[command]/usr/bin/docker ps --all --quiet --no-trunc --filter "label=249cd6"
+2026-10-21T14:51:12.1244114Z ##[command]/usr/bin/docker network prune --force --filter "label=249cd6"
+2026-10-21T14:51:12.1409282Z ##[endgroup]
+2026-10-21T14:51:12.1409838Z ##[group]Create local container network
+2026-10-21T14:51:12.1420827Z ##[command]/usr/bin/docker network create --label 249cd6 github_network_c6a3de0ade2844f7b95a24e71c637ce3
+2026-10-21T14:51:12.1996419Z 8b0736034a86b054a2496b21e173b69b7a1485a5416489eda1453626ed11019a
+2026-10-21T14:51:12.2020955Z ##[endgroup]
+2026-10-21T14:51:12.2050203Z ##[group]Starting job container
+2026-10-21T14:51:12.2086235Z ##[command]/usr/bin/docker --config /home/runner/work/_temp/.docker_f6179aad-c713-4cdd-8396-af7b3e56f685 login ghcr.io -u WAYYYAW --password-stdin
+2026-10-21T14:51:12.4236367Z ##[command]/usr/bin/docker --config /home/runner/work/_temp/.docker_f6179aad-c713-4cdd-8396-af7b3e56f685 pull ghcr.io/flathub-infra/flatpak-github-actions:gnome-46
+2026-10-21T14:51:12.6823676Z gnome-46: Pulling from flathub-infra/flatpak-github-actions
+2026-10-21T14:51:12.7416669Z 067984295d42: Pulling fs layer
+2026-10-21T14:51:12.7417962Z 4a3d8b5fb708: Pulling fs layer
+2026-10-21T14:51:12.7419018Z 94f0375256cb: Pulling fs layer
+2026-10-21T14:51:12.7420355Z b491e994a66c: Pulling fs layer
+2026-10-21T14:51:12.7421593Z f1f56c0e117e: Pulling fs layer
+2026-10-21T14:51:12.7422395Z 3760f96d33d2: Pulling fs layer
+2026-10-21T14:51:12.7423207Z 6070bc0a2f19: Pulling fs layer
+2026-10-21T14:51:12.7424285Z 60087c8b621a: Pulling fs layer
+2026-10-21T14:51:12.7425046Z 8d36b0b58507: Pulling fs layer
+2026-10-21T14:51:12.7425784Z b645bb8fc19c: Pulling fs layer
+2026-10-21T14:51:12.7426486Z 60087c8b621a: Waiting
+2026-10-21T14:51:12.7427143Z 8d36b0b58507: Waiting
+2026-10-21T14:51:12.7428601Z f1f56c0e117e: Waiting
+2026-10-21T14:51:12.7429934Z 3760f96d33d2: Waiting
+2026-10-21T14:51:12.7431128Z b645bb8fc19c: Waiting
+2026-10-21T14:51:12.7431914Z 6070bc0a2f19: Waiting
+2026-10-21T14:51:12.7432659Z b491e994a66c: Waiting
+2026-10-21T14:51:13.1238051Z 067984295d42: Verifying Checksum
+2026-10-21T14:51:13.1247741Z 067984295d42: Download complete
+2026-10-21T14:51:13.1958755Z b491e994a66c: Verifying Checksum
+2026-10-21T14:51:13.1959633Z b491e994a66c: Download complete
+2026-10-21T14:51:13.2934663Z f1f56c0e117e: Verifying Checksum
+2026-10-21T14:51:13.2936195Z f1f56c0e117e: Download complete
+2026-10-21T14:51:14.0544333Z 3760f96d33d2: Verifying Checksum
+2026-10-21T14:51:14.0568783Z 3760f96d33d2: Download complete
+2026-10-21T14:51:14.1984925Z 6070bc0a2f19: Verifying Checksum
+2026-10-21T14:51:14.1987285Z 6070bc0a2f19: Download complete
+2026-10-21T14:51:14.2872658Z 60087c8b621a: Verifying Checksum
+2026-10-21T14:51:14.2874571Z 60087c8b621a: Download complete
+2026-10-21T14:51:14.3559890Z 8d36b0b58507: Verifying Checksum
+2026-10-21T14:51:14.3560913Z 8d36b0b58507: Download complete
+2026-10-21T14:51:14.8892795Z 067984295d42: Pull complete
+2026-10-21T14:51:15.3616166Z 4a3d8b5fb708: Verifying Checksum
+2026-10-21T14:51:15.3620912Z 4a3d8b5fb708: Download complete
+2026-10-21T14:51:17.2308338Z 94f0375256cb: Verifying Checksum
+2026-10-21T14:51:17.2309310Z 94f0375256cb: Download complete
+2026-10-21T14:51:25.3084844Z 4a3d8b5fb708: Pull complete
+2026-10-21T14:51:26.9382245Z b645bb8fc19c: Verifying Checksum
+2026-10-21T14:51:26.9382872Z b645bb8fc19c: Download complete
+2026-10-21T14:51:42.4076370Z 94f0375256cb: Pull complete
+2026-10-21T14:51:42.4173460Z b491e994a66c: Pull complete
+2026-10-21T14:51:42.4255139Z f1f56c0e117e: Pull complete
+2026-10-21T14:51:43.8135507Z 3760f96d33d2: Pull complete
+2026-10-21T14:51:43.8548408Z 6070bc0a2f19: Pull complete
+2026-10-21T14:51:43.8700590Z 60087c8b621a: Pull complete
+2026-10-21T14:51:43.8840289Z 8d36b0b58507: Pull complete
+2026-10-21T14:52:24.3275368Z b645bb8fc19c: Pull complete
+2026-10-21T14:52:24.3326776Z Digest: sha256:7c9b1cccc1a0e71c11bd81b1a0d4e9cedb7ad67c1efdcb193d86ed50395cb443
+2026-10-21T14:52:24.3340395Z Status: Downloaded newer image for ghcr.io/flathub-infra/flatpak-github-actions:gnome-46
+2026-10-21T14:52:24.3343824Z ghcr.io/flathub-infra/flatpak-github-actions:gnome-46
+2026-10-21T14:52:24.3432747Z ##[command]/usr/bin/docker create --name d67711f7bf1649b082dbd2133eb71bbb_ghcrioflathubinfraflatpakgithubactionsgnome46_134ab7 --label 249cd6 --workdir /__w/workbuddy-flatpak/workbuddy-flatpak --network github_network_c6a3de0ade2844f7b95a24e71c637ce3 --privileged -e "HOME=/github/home" -e GITHUB_ACTIONS=true -e CI=true -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work":"/__w" -v "/home/runner/actions-runner/cached/2.338.0/externals":"/__e":ro -v "/home/runner/work/_temp":"/__w/_temp" -v "/home/runner/work/_actions":"/__w/_actions" -v "/opt/hostedtoolcache":"/__t" -v "/home/runner/work/_temp/_github_home":"/github/home" -v "/home/runner/work/_temp/_github_workflow":"/github/workflow" --entrypoint "tail" ghcr.io/flathub-infra/flatpak-github-actions:gnome-46 "-f" "/dev/null"
+2026-10-21T14:52:24.3776673Z 3438bb50bf912343b3972d96f96d12ca6bf407791bcc658d3294fe68b259ef76
+2026-10-21T14:52:24.3805460Z ##[command]/usr/bin/docker start 3438bb50bf912343b3972d96f96d12ca6bf407791bcc658d3294fe68b259ef76
+2026-10-21T14:52:24.6050965Z 3438bb50bf912343b3972d96f96d12ca6bf407791bcc658d3294fe68b259ef76
+2026-10-21T14:52:24.6072923Z ##[command]/usr/bin/docker ps --all --filter id=3438bb50bf912343b3972d96f96d12ca6bf407791bcc658d3294fe68b259ef76 --filter status=running --no-trunc --format "{{.ID}} {{.Status}}"
+2026-10-21T14:52:24.6229692Z 3438bb50bf912343b3972d96f96d12ca6bf407791bcc658d3294fe68b259ef76 Up Less than a second
+2026-10-21T14:52:24.6253329Z ##[command]/usr/bin/docker inspect --format "{{range .Config.Env}}{{println .}}{{end}}" 3438bb50bf912343b3972d96f96d12ca6bf407791bcc658d3294fe68b259ef76
+2026-10-21T14:52:24.6409951Z HOME=/github/home
+2026-10-21T14:52:24.6410711Z GITHUB_ACTIONS=true
+2026-10-21T14:52:24.6411300Z CI=true
+2026-10-21T14:52:24.6411930Z PATH=/app/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+2026-10-21T14:52:24.6412542Z LD_LIBRARY_PATH=/app/lib
+2026-10-21T14:52:24.6413057Z PYTHONPATH=/app/lib/python3.12/site-packages
+2026-10-21T14:52:24.6413890Z GI_TYPELIB_PATH=/app/lib/girepository-1.0
+2026-10-21T14:52:24.6414407Z TMPDIR=/tmp
+2026-10-21T14:52:24.6435088Z ##[endgroup]
+2026-10-21T14:52:24.6445033Z ##[group]Waiting for all services to be ready
+2026-10-21T14:52:24.6446794Z ##[endgroup]
+2026-10-21T14:52:24.6825267Z ##[group]Run actions/checkout@v4
+2026-10-21T14:52:24.6825900Z with:
+2026-10-21T14:52:24.6826149Z   repository: WAYYYAW/workbuddy-flatpak
+2026-10-21T14:52:24.6828604Z   token: ***
+2026-10-21T14:52:24.6828825Z   ssh-strict: true
+2026-10-21T14:52:24.6829034Z   ssh-user: git
+2026-10-21T14:52:24.6829246Z   persist-credentials: true
+2026-10-21T14:52:24.6829488Z   clean: true
+2026-10-21T14:52:24.6829700Z   sparse-checkout-cone-mode: true
+2026-10-21T14:52:24.6829959Z   fetch-depth: 1
+2026-10-21T14:52:24.6830162Z   fetch-tags: false
+2026-10-21T14:52:24.6830472Z   show-progress: true
+2026-10-21T14:52:24.6830711Z   lfs: false
+2026-10-21T14:52:24.6830902Z   submodules: false
+2026-10-21T14:52:24.6831116Z   set-safe-directory: true
+2026-10-21T14:52:24.6831364Z   allow-unsafe-pr-checkout: false
+2026-10-21T14:52:24.6831816Z env:
+2026-10-21T14:52:24.6832032Z   APP_ID: com.tencent.WorkBuddy
+2026-10-21T14:52:24.6832721Z   RPM_URL: https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/WorkBuddy-linux-x64-rpm-5.6.2.40046327-c7b525f3.rpm
+2026-10-21T14:52:24.6833314Z ##[endgroup]
+2026-10-21T14:52:24.6897371Z ##[command]/usr/bin/docker exec  3438bb50bf912343b3972d96f96d12ca6bf407791bcc658d3294fe68b259ef76 sh -c "cat /etc/*release | grep ^ID"
+2026-10-21T14:52:24.8762927Z Syncing repository: WAYYYAW/workbuddy-flatpak
+2026-10-21T14:52:24.8765448Z ##[group]Getting Git version info
+2026-10-21T14:52:24.8766193Z Working directory is '/__w/workbuddy-flatpak/workbuddy-flatpak'
+2026-10-21T14:52:24.8767296Z [command]/usr/sbin/git version
+2026-10-21T14:52:24.8810548Z git version 2.49.0
+2026-10-21T14:52:24.8845413Z ##[endgroup]
+2026-10-21T14:52:24.8871251Z Temporarily overriding HOME='/__w/_temp/b8b2eea4-6419-4d65-9e40-ea84458b17fd' before making global git config changes
+2026-10-21T14:52:24.8873120Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-21T14:52:24.8875045Z [command]/usr/sbin/git config --global --add safe.directory /__w/workbuddy-flatpak/workbuddy-flatpak
+2026-10-21T14:52:24.8911086Z Deleting the contents of '/__w/workbuddy-flatpak/workbuddy-flatpak'
+2026-10-21T14:52:24.8918791Z ##[group]Initializing the repository
+2026-10-21T14:52:24.8923206Z [command]/usr/sbin/git init /__w/workbuddy-flatpak/workbuddy-flatpak
+2026-10-21T14:52:24.9008690Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-21T14:52:24.9010698Z hint: is subject to change. To configure the initial branch name to use in all
+2026-10-21T14:52:24.9012622Z hint: of your new repositories, which will suppress this warning, call:
+2026-10-21T14:52:24.9016958Z hint:
+2026-10-21T14:52:24.9018128Z hint: 	git config --global init.defaultBranch <name>
+2026-10-21T14:52:24.9019050Z hint:
+2026-10-21T14:52:24.9019917Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-21T14:52:24.9021780Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-21T14:52:24.9023064Z hint:
+2026-10-21T14:52:24.9023959Z hint: 	git branch -m <name>
+2026-10-21T14:52:24.9025280Z Initialized empty Git repository in /__w/workbuddy-flatpak/workbuddy-flatpak/.git/
+2026-10-21T14:52:24.9027660Z [command]/usr/sbin/git remote add origin https://github.com/WAYYYAW/workbuddy-flatpak
+2026-10-21T14:52:24.9069843Z ##[endgroup]
+2026-10-21T14:52:24.9070506Z ##[group]Disabling automatic garbage collection
+2026-10-21T14:52:24.9071078Z [command]/usr/sbin/git config --local gc.auto 0
+2026-10-21T14:52:24.9105112Z ##[endgroup]
+2026-10-21T14:52:24.9105775Z ##[group]Setting up auth
+2026-10-21T14:52:24.9113650Z [command]/usr/sbin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-21T14:52:24.9148831Z [command]/usr/sbin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-21T14:52:24.9479397Z [command]/usr/sbin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-21T14:52:24.9528174Z [command]/usr/sbin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-21T14:52:24.9862337Z [command]/usr/sbin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-21T14:52:24.9909689Z [command]/usr/sbin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-21T14:52:25.0225899Z [command]/usr/sbin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-21T14:52:25.0314526Z ##[endgroup]
+2026-10-21T14:52:25.0315622Z ##[group]Fetching the repository
+2026-10-21T14:52:25.0316997Z [command]/usr/sbin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +dd6f21a0a5fbe81351a521a42b4083f53b4f7f50:refs/remotes/origin/main
+2026-10-21T14:52:25.2856340Z From https://github.com/WAYYYAW/workbuddy-flatpak
+2026-10-21T14:52:25.2857307Z  * [new ref]         dd6f21a0a5fbe81351a521a42b4083f53b4f7f50 -> origin/main
+2026-10-21T14:52:25.2881602Z ##[endgroup]
+2026-10-21T14:52:25.2885004Z ##[group]Determining the checkout info
+2026-10-21T14:52:25.2886207Z ##[endgroup]
+2026-10-21T14:52:25.2894673Z [command]/usr/sbin/git sparse-checkout disable
+2026-10-21T14:52:25.2951701Z [command]/usr/sbin/git config --local --unset-all extensions.worktreeConfig
+2026-10-21T14:52:25.2997382Z ##[group]Checking out the ref
+2026-10-21T14:52:25.3044629Z [command]/usr/sbin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-10-21T14:52:25.3094531Z Switched to a new branch 'main'
+2026-10-21T14:52:25.3098025Z branch 'main' set up to track 'origin/main'.
+2026-10-21T14:52:25.3110222Z ##[endgroup]
+2026-10-21T14:52:25.3164618Z [command]/usr/sbin/git log -1 --format=%H
+2026-10-21T14:52:25.3215607Z dd6f21a0a5fbe81351a521a42b4083f53b4f7f50
+2026-10-21T14:52:25.3458547Z ##[group]Run flatpak --version
+2026-10-21T14:52:25.3458951Z [36;1mflatpak --version[0m
+2026-10-21T14:52:25.3459249Z [36;1mflatpak-builder --version[0m
+2026-10-21T14:52:25.3459558Z [36;1mdf -h /[0m
+2026-10-21T14:52:25.3462786Z shell: sh -e {0}
+2026-10-21T14:52:25.3463019Z env:
+2026-10-21T14:52:25.3463224Z   APP_ID: com.tencent.WorkBuddy
+2026-10-21T14:52:25.3464131Z   RPM_URL: https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/WorkBuddy-linux-x64-rpm-5.6.2.40046327-c7b525f3.rpm
+2026-10-21T14:52:25.3464700Z ##[endgroup]
+2026-10-21T14:52:25.4053927Z Flatpak 1.16.0
+2026-10-21T14:52:25.4155595Z flatpak-builder-1.4.4
+2026-10-21T14:52:25.4175062Z Filesystem      Size  Used Avail Use% Mounted on
+2026-10-21T14:52:25.4175700Z overlay         145G   65G   80G  45% /
+2026-10-21T14:52:25.4269270Z ##[group]Run # 该镜像基于 Fedora（flatpak-builder-lint），没有 apt
+2026-10-21T14:52:25.4269817Z [36;1m# 该镜像基于 Fedora（flatpak-builder-lint），没有 apt[0m
+2026-10-21T14:52:25.4270187Z [36;1mif command -v dnf >/dev/null 2>&1; then[0m
+2026-10-21T14:52:25.4270537Z [36;1m  dnf install -y -q rpm2cpio cpio xz curl file[0m
+2026-10-21T14:52:25.4271094Z [36;1melif command -v apt-get >/dev/null 2>&1; then[0m
+2026-10-21T14:52:25.4271555Z [36;1m  apt-get update -qq && apt-get install -y -qq rpm2cpio cpio xz-utils curl file[0m
+2026-10-21T14:52:25.4271980Z [36;1mfi[0m
+2026-10-21T14:52:25.4272309Z [36;1mrpm2cpio --version | head -1 || rpm2cpio </dev/null >/dev/null 2>&1 || true[0m
+2026-10-21T14:52:25.4272737Z [36;1mcpio --version | head -1[0m
+2026-10-21T14:52:25.4273113Z shell: sh -e {0}
+2026-10-21T14:52:25.4273316Z env:
+2026-10-21T14:52:25.4273791Z   APP_ID: com.tencent.WorkBuddy
+2026-10-21T14:52:25.4274462Z   RPM_URL: https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/WorkBuddy-linux-x64-rpm-5.6.2.40046327-c7b525f3.rpm
+2026-10-21T14:52:25.4275043Z ##[endgroup]
+2026-10-21T14:52:25.4793312Z --version: unknown option
+2026-10-21T14:52:25.4810451Z cpio (GNU cpio) 2.15
+2026-10-21T14:52:25.5705522Z ##[group]Run actions/cache@v4
+2026-10-21T14:52:25.5705838Z with:
+2026-10-21T14:52:25.5706064Z   path: .cache-rpm
+2026-10-21T14:52:25.5706972Z   key: rpm-40b6cf7e0533d1c9e30704418fe9a97b4a2a1cf49c6952d8690e6f8de5605395-https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/WorkBuddy-linux-x64-rpm-5.6.2.40046327-c7b525f3.rpm
+2026-10-21T14:52:25.5707848Z   enableCrossOsArchive: false
+2026-10-21T14:52:25.5708115Z   fail-on-cache-miss: false
+2026-10-21T14:52:25.5708350Z   lookup-only: false
+2026-10-21T14:52:25.5708564Z   save-always: false
+2026-10-21T14:52:25.5708759Z env:
+2026-10-21T14:52:25.5708954Z   APP_ID: com.tencent.WorkBuddy
+2026-10-21T14:52:25.5709506Z   RPM_URL: https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/WorkBuddy-linux-x64-rpm-5.6.2.40046327-c7b525f3.rpm
+2026-10-21T14:52:25.5710077Z ##[endgroup]
+2026-10-21T14:52:25.5715271Z ##[command]/usr/bin/docker exec  3438bb50bf912343b3972d96f96d12ca6bf407791bcc658d3294fe68b259ef76 sh -c "cat /etc/*release | grep ^ID"
+2026-10-21T14:52:25.7612764Z (node:163) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-21T14:52:25.7614288Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-21T14:52:25.8376857Z Cache not found for input keys: rpm-40b6cf7e0533d1c9e30704418fe9a97b4a2a1cf49c6952d8690e6f8de5605395-https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/WorkBuddy-linux-x64-rpm-5.6.2.40046327-c7b525f3.rpm
+2026-10-21T14:52:25.8540022Z ##[group]Run mkdir -p .cache-rpm
+2026-10-21T14:52:25.8540375Z [36;1mmkdir -p .cache-rpm[0m
+2026-10-21T14:52:25.8540748Z [36;1mif [ "$CACHE_HIT" = "true" ] && ls .cache-rpm/*.rpm >/dev/null 2>&1; then[0m
+2026-10-21T14:52:25.8541167Z [36;1m  echo "复用缓存的 RPM"[0m
+2026-10-21T14:52:25.8541411Z [36;1melse[0m
+2026-10-21T14:52:25.8541772Z [36;1m  curl -fL --retry 3 --retry-delay 3 -o .cache-rpm/workbuddy.rpm "$RPM_URL"[0m
+2026-10-21T14:52:25.8542179Z [36;1mfi[0m
+2026-10-21T14:52:25.8542377Z [36;1mls -lh .cache-rpm/[0m
+2026-10-21T14:52:25.8542627Z [36;1mfile .cache-rpm/workbuddy.rpm[0m
+2026-10-21T14:52:25.8542982Z shell: sh -e {0}
+2026-10-21T14:52:25.8543201Z env:
+2026-10-21T14:52:25.8543394Z   APP_ID: com.tencent.WorkBuddy
+2026-10-21T14:52:25.8544311Z   RPM_URL: https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/WorkBuddy-linux-x64-rpm-5.6.2.40046327-c7b525f3.rpm
+2026-10-21T14:52:25.8544879Z   CACHE_HIT: 
+2026-10-21T14:52:25.8545078Z ##[endgroup]
+2026-10-21T14:52:25.9012770Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-10-21T14:52:25.9013415Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-10-21T14:52:25.9014204Z 
+2026-10-21T14:52:26.4085565Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-10-21T14:52:27.1837038Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-10-21T14:52:28.1999640Z   1  360M    1 5703k    0     0  4447k      0  0:01:23  0:00:01  0:01:22 4445k
+2026-10-21T14:52:29.1842699Z  10  360M   10 36.4M    0     0  15.8M      0  0:00:22  0:00:02  0:00:20 15.8M
+2026-10-21T14:52:30.1882247Z  18  360M   18 66.6M    0     0  20.2M      0  0:00:17  0:00:03  0:00:14 20.2M
+2026-10-21T14:52:31.1942374Z  27  360M   27 97.5M    0     0  22.7M      0  0:00:15  0:00:04  0:00:11 22.7M
+2026-10-21T14:52:32.1811940Z  35  360M   35  128M    0     0  24.2M      0  0:00:14  0:00:05  0:00:09 26.8M
+2026-10-21T14:52:33.1857981Z  43  360M   43  158M    0     0  25.2M      0  0:00:14  0:00:06  0:00:08 30.6M
+2026-10-21T14:52:34.2028839Z  52  360M   52  188M    0     0  25.9M      0  0:00:13  0:00:07  0:00:06 30.5M
+2026-10-21T14:52:35.2073858Z  60  360M   60  219M    0     0  26.4M      0  0:00:13  0:00:08  0:00:05 30.5M
+2026-10-21T14:52:36.2190561Z  69  360M   69  250M    0     0  26.9M      0  0:00:13  0:00:09  0:00:04 30.4M
+2026-10-21T14:52:37.1816248Z  78  360M   78  281M    0     0  27.2M      0  0:00:13  0:00:10  0:00:03 30.4M
+2026-10-21T14:52:38.1859656Z  86  360M   86  310M    0     0  27.5M      0  0:00:13  0:00:11  0:00:02 30.4M
+2026-10-21T14:52:38.8082508Z  94  360M   94  340M    0     0  27.7M      0  0:00:13  0:00:12  0:00:01 30.4M
+2026-10-21T14:52:38.8083288Z 100  360M  100  360M    0     0  27.9M      0  0:00:12  0:00:12 --:--:-- 30.6M
+2026-10-21T14:52:38.8120583Z total 361M
+2026-10-21T14:52:38.8120997Z -rw-r--r-- 1 root root 361M Oct 21 14:52 workbuddy.rpm
+2026-10-21T14:52:38.8257168Z .cache-rpm/workbuddy.rpm: RPM v3.0 bin i386/x86_64
+2026-10-21T14:52:38.8335178Z ##[group]Run flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+2026-10-21T14:52:38.8336071Z [36;1mflatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo[0m
+2026-10-21T14:52:38.8336641Z [36;1mflatpak install --noninteractive -y flathub \[0m
+2026-10-21T14:52:38.8337022Z [36;1m  org.freedesktop.Platform/x86_64/25.08 \[0m
+2026-10-21T14:52:38.8337387Z [36;1m  org.freedesktop.Platform.Locale/x86_64/25.08 \[0m
+2026-10-21T14:52:38.8337736Z [36;1m  org.freedesktop.Sdk/x86_64/25.08 \[0m
+2026-10-21T14:52:38.8338082Z [36;1m  org.electronjs.Electron2.BaseApp/x86_64/25.08[0m
+2026-10-21T14:52:38.8338533Z shell: sh -e {0}
+2026-10-21T14:52:38.8338736Z env:
+2026-10-21T14:52:38.8338941Z   APP_ID: com.tencent.WorkBuddy
+2026-10-21T14:52:38.8339518Z   RPM_URL: https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/WorkBuddy-linux-x64-rpm-5.6.2.40046327-c7b525f3.rpm
+2026-10-21T14:52:38.8340097Z ##[endgroup]
+2026-10-21T14:52:39.4664744Z Installing runtime/org.freedesktop.Platform.GL.default/x86_64/25.08
+2026-10-21T14:52:42.9671731Z Installing runtime/org.freedesktop.Platform.GL.default/x86_64/25.08-extra
+2026-10-21T14:52:43.6877325Z Installing runtime/org.freedesktop.Platform.Locale/x86_64/25.08
+2026-10-21T14:52:49.8563029Z Installing runtime/org.freedesktop.Platform.codecs-extra/x86_64/25.08-extra
+2026-10-21T14:52:50.2020528Z Installing runtime/org.freedesktop.Platform/x86_64/25.08
+2026-10-21T14:53:00.3233862Z Installing app/org.electronjs.Electron2.BaseApp/x86_64/25.08
+2026-10-21T14:53:00.5915425Z Installing runtime/org.freedesktop.Sdk.Locale/x86_64/25.08
+2026-10-21T14:53:04.3276624Z Installing runtime/org.freedesktop.Sdk/x86_64/25.08
+2026-10-21T14:53:23.9390467Z ##[group]Run desktop-file-validate com.tencent.WorkBuddy.desktop
+2026-10-21T14:53:23.9391349Z [36;1mdesktop-file-validate com.tencent.WorkBuddy.desktop[0m
+2026-10-21T14:53:23.9392256Z [36;1mappstreamcli validate --no-net metainfo/com.tencent.WorkBuddy.metainfo.xml[0m
+2026-10-21T14:53:23.9393739Z [36;1mpython3 -c "import yaml,sys; yaml.safe_load(open('com.tencent.WorkBuddy.yaml')); print('yaml ok')"[0m
+2026-10-21T14:53:23.9394822Z shell: sh -e {0}
+2026-10-21T14:53:23.9395183Z env:
+2026-10-21T14:53:23.9395544Z   APP_ID: com.tencent.WorkBuddy
+2026-10-21T14:53:23.9396514Z   RPM_URL: https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/WorkBuddy-linux-x64-rpm-5.6.2.40046327-c7b525f3.rpm
+2026-10-21T14:53:23.9397503Z ##[endgroup]
+2026-10-21T14:53:23.9971559Z 
+2026-10-21T14:53:23.9972248Z ? Validation was successful: pedantic: 1
+2026-10-21T14:53:24.0424360Z yaml ok
+2026-10-21T14:53:24.0554460Z ##[group]Run ./build.sh
+2026-10-21T14:53:24.0554981Z [36;1m./build.sh[0m
+2026-10-21T14:53:24.0555297Z shell: sh -e {0}
+2026-10-21T14:53:24.0555498Z env:
+2026-10-21T14:53:24.0555691Z   APP_ID: com.tencent.WorkBuddy
+2026-10-21T14:53:24.0556262Z   RPM_URL: https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/WorkBuddy-linux-x64-rpm-5.6.2.40046327-c7b525f3.rpm
+2026-10-21T14:53:24.0556849Z   FLATPAK_SCOPE: system
+2026-10-21T14:53:24.0557242Z   RPM: /home/runner/work/workbuddy-flatpak/workbuddy-flatpak/.cache-rpm/workbuddy.rpm
+2026-10-21T14:53:24.0557667Z ##[endgroup]
+2026-10-21T14:53:24.1339964Z [1;34m==>[0m 已安装(系统)：org.freedesktop.Platform/x86_64/25.08
+2026-10-21T14:53:24.1472485Z [1;34m==>[0m 已安装(系统)：org.freedesktop.Sdk/x86_64/25.08
+2026-10-21T14:53:24.1622382Z [1;34m==>[0m 已安装(系统)：org.electronjs.Electron2.BaseApp/x86_64/25.08
+2026-10-21T14:53:24.1756977Z [1;34m==>[0m 已安装(系统)：org.freedesktop.Platform.Locale/x86_64/25.08
+2026-10-21T14:53:24.1776278Z [1;34m==>[0m RPM: 361M
+2026-10-21T14:53:24.1776849Z [1;34m==>[0m 解包 RPM
+2026-10-21T14:53:46.2448669Z [1;34m==>[0m 生成 source 目录
+2026-10-21T14:53:49.5447002Z source 目录已生成：/__w/workbuddy-flatpak/workbuddy-flatpak/.source
+2026-10-21T14:53:49.6827826Z 1.6G	/__w/workbuddy-flatpak/workbuddy-flatpak/.source/app
+2026-10-21T14:53:49.8207503Z [1;34m==>[0m 开始构建（源码约 1.7GB，视机器性能约 5-15 分钟）
+2026-10-21T14:53:50.8719254Z Dependency Sdk: org.freedesktop.Sdk 25.08
+2026-10-21T14:53:50.9190203Z Updating org.freedesktop.Sdk/x86_64/25.08
+2026-10-21T14:53:51.5080438Z 
+2026-10-21T14:53:51.5080917Z Nothing to do.
+2026-10-21T14:53:51.5138578Z Dependency Runtime: org.freedesktop.Platform 25.08
+2026-10-21T14:53:51.5275834Z Updating org.freedesktop.Platform/x86_64/25.08
+2026-10-21T14:53:51.6346084Z 
+2026-10-21T14:53:51.6346823Z Nothing to do.
+2026-10-21T14:53:51.6398506Z Dependency Base: org.electronjs.Electron2.BaseApp 25.08
+2026-10-21T14:53:51.6543298Z Updating org.electronjs.Electron2.BaseApp/x86_64/25.08
+2026-10-21T14:53:51.7807540Z 
+2026-10-21T14:53:51.7808194Z Nothing to do.
+2026-10-21T14:53:51.8418237Z Downloading sources
+2026-10-21T14:53:51.8531443Z Initializing build dir
+2026-10-21T14:53:51.9188578Z Committing stage init to cache
+2026-10-21T14:53:52.0303343Z Starting build of com.tencent.WorkBuddy
+2026-10-21T14:53:52.0304393Z ========================================================================
+2026-10-21T14:53:52.0305210Z Building module workbuddy in /__w/workbuddy-flatpak/workbuddy-flatpak/.flatpak-builder/build/workbuddy-1
+2026-10-21T14:53:52.0305981Z ========================================================================
+2026-10-21T14:53:53.9998090Z Running: install -d /app/extra
+2026-10-21T14:53:54.4635556Z Running: cp -a app /app/extra/WorkBuddy
+2026-10-21T14:53:58.8478853Z Running: chmod 0755 /app/extra/WorkBuddy/workbuddy
+2026-10-21T14:53:58.9736608Z Running: chmod 0755 /app/extra/WorkBuddy/chrome_crashpad_handler
+2026-10-21T14:53:59.0347533Z Running: install -Dm755 appfiles/workbuddy.sh      /app/bin/workbuddy
+2026-10-21T14:53:59.0972311Z Running: install -Dm755 appfiles/workbuddy-node.sh /app/bin/workbuddy-node
+2026-10-21T14:53:59.1591052Z Running: install -Dm644 com.tencent.WorkBuddy.desktop               /app/share/applications/com.tencent.WorkBuddy.desktop
+2026-10-21T14:53:59.2217375Z Running: install -Dm644 icons/workbuddy.png                         /app/share/icons/hicolor/512x512/apps/com.tencent.WorkBuddy.png
+2026-10-21T14:53:59.2855279Z Running: install -Dm644 metainfo/com.tencent.WorkBuddy.metainfo.xml /app/share/metainfo/com.tencent.WorkBuddy.metainfo.xml
+2026-10-21T14:53:59.3485819Z Running: rm -f /app/extra/WorkBuddy/libvk_swiftshader.so
+2026-10-21T14:53:59.5088176Z Running: rm -f /app/extra/WorkBuddy/vk_swiftshader_icd.json
+2026-10-21T14:53:59.7450731Z Removing stale python bytecode file files/extra/WorkBuddy/resources/runtime/python/lib/python3.13/encodings/__pycache__/__init__.cpython-313.pyc
+2026-10-21T14:53:59.7454191Z Removing stale python bytecode file files/extra/WorkBuddy/resources/runtime/python/lib/python3.13/encodings/__pycache__/aliases.cpython-313.pyc
+2026-10-21T14:53:59.7456993Z Removing stale python bytecode file files/extra/WorkBuddy/resources/runtime/python/lib/python3.13/encodings/__pycache__/utf_8.cpython-313.pyc
+2026-10-21T14:54:00.0180130Z compressing debuginfo in: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/libvulkan.so.1
+2026-10-21T14:54:00.2675471Z processing: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/libvulkan.so.1
+2026-10-21T14:54:00.2676790Z [30] .debug_abbrev compressed -> .zdebug_abbrev (1953 => 124 6.35%)
+2026-10-21T14:54:00.2677973Z [31] .debug_info compressed -> .zdebug_info (3444 => 2009 58.33%)
+2026-10-21T14:54:00.2679626Z [32] .debug_ranges compressed -> .zdebug_ranges (126480 => 22062 17.44%)
+2026-10-21T14:54:00.2680919Z [33] .debug_str compressed -> .zdebug_str (2288 => 199 8.70%)
+2026-10-21T14:54:00.2681883Z [34] .debug_addr compressed -> .zdebug_addr (242528 => 55582 22.92%)
+2026-10-21T14:54:00.2682581Z [35] .debug_line compressed -> .zdebug_line (365829 => 104031 28.44%)
+2026-10-21T14:54:00.2683676Z [36] .debug_frame compressed -> .zdebug_frame (41416 => 6237 15.06%)
+2026-10-21T14:54:00.2684486Z [39] Updating section string table
+2026-10-21T14:54:00.2685988Z stripping /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/libvulkan.so.1 to /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/lib/debug/extra/WorkBuddy/libvulkan.so.1.debug
+2026-10-21T14:54:00.6666009Z compressing debuginfo in: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/app.asar.unpacked/cli/vendor/sandbox/5.6.15/sandbox-center
+2026-10-21T14:54:00.6686830Z processing: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/app.asar.unpacked/cli/vendor/sandbox/5.6.15/sandbox-center
+2026-10-21T14:54:00.6688460Z [12] .debug_gdb_scripts ignoring allocated section
+2026-10-21T14:54:00.6689382Z Nothing to do.
+2026-10-21T14:54:00.6691535Z stripping /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/app.asar.unpacked/cli/vendor/sandbox/5.6.15/sandbox-center to /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/lib/debug/extra/WorkBuddy/resources/app.asar.unpacked/cli/vendor/sandbox/5.6.15/sandbox-center.debug
+2026-10-21T14:54:00.6856069Z compressing debuginfo in: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/app.asar.unpacked/cli/vendor/sandbox/5.6.15/sandbox-cli
+2026-10-21T14:54:00.6875115Z processing: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/app.asar.unpacked/cli/vendor/sandbox/5.6.15/sandbox-cli
+2026-10-21T14:54:00.6876584Z [12] .debug_gdb_scripts ignoring allocated section
+2026-10-21T14:54:00.6877125Z Nothing to do.
+2026-10-21T14:54:00.6878852Z stripping /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/app.asar.unpacked/cli/vendor/sandbox/5.6.15/sandbox-cli to /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/lib/debug/extra/WorkBuddy/resources/app.asar.unpacked/cli/vendor/sandbox/5.6.15/sandbox-cli.debug
+2026-10-21T14:54:00.6969042Z compressing debuginfo in: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/app.asar.unpacked/cli/vendor/sandbox/5.6.15/sandbox-cli-gc
+2026-10-21T14:54:00.6988092Z processing: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/app.asar.unpacked/cli/vendor/sandbox/5.6.15/sandbox-cli-gc
+2026-10-21T14:54:00.6989580Z [12] .debug_gdb_scripts ignoring allocated section
+2026-10-21T14:54:00.6990173Z Nothing to do.
+2026-10-21T14:54:00.6992014Z stripping /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/app.asar.unpacked/cli/vendor/sandbox/5.6.15/sandbox-cli-gc to /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/lib/debug/extra/WorkBuddy/resources/app.asar.unpacked/cli/vendor/sandbox/5.6.15/sandbox-cli-gc.debug
+2026-10-21T14:54:00.7056832Z compressing debuginfo in: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/app.asar.unpacked/cli/vendor/sandbox/5.6.15/wb-bridge
+2026-10-21T14:54:00.7075104Z processing: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/app.asar.unpacked/cli/vendor/sandbox/5.6.15/wb-bridge
+2026-10-21T14:54:00.7076565Z [12] .debug_gdb_scripts ignoring allocated section
+2026-10-21T14:54:00.7077183Z Nothing to do.
+2026-10-21T14:54:00.7079267Z stripping /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/app.asar.unpacked/cli/vendor/sandbox/5.6.15/wb-bridge to /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/lib/debug/extra/WorkBuddy/resources/app.asar.unpacked/cli/vendor/sandbox/5.6.15/wb-bridge.debug
+2026-10-21T14:54:00.8988572Z compressing debuginfo in: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/app.asar.unpacked/node_modules/@tencent/tencent-docs-ai-engine/bin/linux-x64/editor_sdk
+2026-10-21T14:54:00.9011045Z processing: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/app.asar.unpacked/node_modules/@tencent/tencent-docs-ai-engine/bin/linux-x64/editor_sdk
+2026-10-21T14:54:00.9012442Z Nothing to do.
+2026-10-21T14:54:00.9023828Z stripping /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/app.asar.unpacked/node_modules/@tencent/tencent-docs-ai-engine/bin/linux-x64/editor_sdk to /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/lib/debug/extra/WorkBuddy/resources/app.asar.unpacked/node_modules/@tencent/tencent-docs-ai-engine/bin/linux-x64/editor_sdk.debug
+2026-10-21T14:54:01.3520523Z compressing debuginfo in: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/node/bin/node
+2026-10-21T14:54:02.9157589Z processing: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/node/bin/node
+2026-10-21T14:54:02.9158830Z [32] .debug_aranges compressed -> .zdebug_aranges (5552 => 1281 23.07%)
+2026-10-21T14:54:02.9159991Z [33] .debug_info compressed -> .zdebug_info (981447 => 466372 47.52%)
+2026-10-21T14:54:02.9160905Z [34] .debug_abbrev compressed -> .zdebug_abbrev (110951 => 15683 14.14%)
+2026-10-21T14:54:02.9162000Z [35] .debug_line compressed -> .zdebug_line (314221 => 116156 36.97%)
+2026-10-21T14:54:02.9162651Z [36] .debug_str compressed -> .zdebug_str (74972 => 24743 33.00%)
+2026-10-21T14:54:02.9163277Z [37] .debug_loc compressed -> .zdebug_loc (909521 => 169995 18.69%)
+2026-10-21T14:54:02.9164347Z [38] .debug_ranges compressed -> .zdebug_ranges (108192 => 18618 17.21%)
+2026-10-21T14:54:02.9165146Z [41] Updating section string table
+2026-10-21T14:54:02.9169682Z stripping /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/node/bin/node to /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/lib/debug/extra/WorkBuddy/resources/runtime/node/bin/node.debug
+2026-10-21T14:54:04.0087439Z compressing debuginfo in: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/bin/python
+2026-10-21T14:54:14.4521305Z processing: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/bin/python
+2026-10-21T14:54:14.4522656Z [38] .debug_aranges compressed -> .zdebug_aranges (289840 => 92695 31.98%)
+2026-10-21T14:54:14.4523741Z [39] .debug_info compressed -> .zdebug_info (54573553 => 25763593 47.21%)
+2026-10-21T14:54:14.4524661Z [40] .debug_abbrev compressed -> .zdebug_abbrev (5245 => 1968 37.52%)
+2026-10-21T14:54:14.4525599Z [41] .debug_line compressed -> .zdebug_line (5478051 => 1736916 31.71%)
+2026-10-21T14:54:14.4526481Z [42] .debug_frame compressed -> .zdebug_frame (240 => 126 52.50%)
+2026-10-21T14:54:14.4527337Z [43] .debug_str compressed -> .zdebug_str (546546 => 154323 28.24%)
+2026-10-21T14:54:14.4528407Z [44] .debug_loc compressed -> .zdebug_loc (18139305 => 3245725 17.89%)
+2026-10-21T14:54:14.4529124Z [45] .debug_ranges compressed -> .zdebug_ranges (4656240 => 735678 15.80%)
+2026-10-21T14:54:14.4530076Z [46] .debug_line_str compressed -> .zdebug_line_str (102 => 83 81.37%)
+2026-10-21T14:54:14.4530850Z [47] .debug_loclists compressed -> .zdebug_loclists (1596 => 909 56.95%)
+2026-10-21T14:54:14.4531619Z [48] .debug_rnglists compressed -> .zdebug_rnglists (141 => 122 86.52%)
+2026-10-21T14:54:14.4532270Z [52] .debug_addr compressed -> .zdebug_addr (184 => 91 49.46%)
+2026-10-21T14:54:14.4532627Z [51] Updating section string table
+2026-10-21T14:54:14.4536739Z stripping /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/bin/python to /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/lib/debug/extra/WorkBuddy/resources/runtime/python/bin/python.debug
+2026-10-21T14:54:15.4349599Z compressing debuginfo in: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/bin/python3.13
+2026-10-21T14:54:25.8462383Z processing: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/bin/python3.13
+2026-10-21T14:54:25.8464134Z [38] .debug_aranges compressed -> .zdebug_aranges (289840 => 92695 31.98%)
+2026-10-21T14:54:25.8464890Z [39] .debug_info compressed -> .zdebug_info (54573553 => 25763593 47.21%)
+2026-10-21T14:54:25.8465518Z [40] .debug_abbrev compressed -> .zdebug_abbrev (5245 => 1968 37.52%)
+2026-10-21T14:54:25.8466140Z [41] .debug_line compressed -> .zdebug_line (5478051 => 1736916 31.71%)
+2026-10-21T14:54:25.8466742Z [42] .debug_frame compressed -> .zdebug_frame (240 => 126 52.50%)
+2026-10-21T14:54:25.8467318Z [43] .debug_str compressed -> .zdebug_str (546546 => 154323 28.24%)
+2026-10-21T14:54:25.8467897Z [44] .debug_loc compressed -> .zdebug_loc (18139305 => 3245725 17.89%)
+2026-10-21T14:54:25.8468513Z [45] .debug_ranges compressed -> .zdebug_ranges (4656240 => 735678 15.80%)
+2026-10-21T14:54:25.8469333Z [46] .debug_line_str compressed -> .zdebug_line_str (102 => 83 81.37%)
+2026-10-21T14:54:25.8470106Z [47] .debug_loclists compressed -> .zdebug_loclists (1596 => 909 56.95%)
+2026-10-21T14:54:25.8470846Z [48] .debug_rnglists compressed -> .zdebug_rnglists (141 => 122 86.52%)
+2026-10-21T14:54:25.8471773Z [52] .debug_addr compressed -> .zdebug_addr (184 => 91 49.46%)
+2026-10-21T14:54:25.8472489Z [51] Updating section string table
+2026-10-21T14:54:25.8474739Z stripping /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/bin/python3.13 to /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/lib/debug/extra/WorkBuddy/resources/runtime/python/bin/python3.13.debug
+2026-10-21T14:54:26.8251757Z compressing debuginfo in: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/bin/python3
+2026-10-21T14:54:37.2970601Z processing: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/bin/python3
+2026-10-21T14:54:37.2971929Z [38] .debug_aranges compressed -> .zdebug_aranges (289840 => 92695 31.98%)
+2026-10-21T14:54:37.2972688Z [39] .debug_info compressed -> .zdebug_info (54573553 => 25763593 47.21%)
+2026-10-21T14:54:37.2973385Z [40] .debug_abbrev compressed -> .zdebug_abbrev (5245 => 1968 37.52%)
+2026-10-21T14:54:37.2974479Z [41] .debug_line compressed -> .zdebug_line (5478051 => 1736916 31.71%)
+2026-10-21T14:54:37.2975159Z [42] .debug_frame compressed -> .zdebug_frame (240 => 126 52.50%)
+2026-10-21T14:54:37.2975794Z [43] .debug_str compressed -> .zdebug_str (546546 => 154323 28.24%)
+2026-10-21T14:54:37.2976464Z [44] .debug_loc compressed -> .zdebug_loc (18139305 => 3245725 17.89%)
+2026-10-21T14:54:37.2977155Z [45] .debug_ranges compressed -> .zdebug_ranges (4656240 => 735678 15.80%)
+2026-10-21T14:54:37.2977855Z [46] .debug_line_str compressed -> .zdebug_line_str (102 => 83 81.37%)
+2026-10-21T14:54:37.2978548Z [47] .debug_loclists compressed -> .zdebug_loclists (1596 => 909 56.95%)
+2026-10-21T14:54:37.2979676Z [48] .debug_rnglists compressed -> .zdebug_rnglists (141 => 122 86.52%)
+2026-10-21T14:54:37.2980808Z [52] .debug_addr compressed -> .zdebug_addr (184 => 91 49.46%)
+2026-10-21T14:54:37.2981414Z [51] Updating section string table
+2026-10-21T14:54:37.2984492Z stripping /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/bin/python3 to /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/lib/debug/extra/WorkBuddy/resources/runtime/python/bin/python3.debug
+2026-10-21T14:54:37.4649530Z compressing debuginfo in: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/itcl4.3.5/libtcl9itcl4.3.5.so
+2026-10-21T14:54:37.4669119Z processing: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/itcl4.3.5/libtcl9itcl4.3.5.so
+2026-10-21T14:54:37.4670400Z Nothing to do.
+2026-10-21T14:54:37.4672603Z stripping /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/itcl4.3.5/libtcl9itcl4.3.5.so to /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/lib/debug/extra/WorkBuddy/resources/runtime/python/lib/itcl4.3.5/libtcl9itcl4.3.5.so.debug
+2026-10-21T14:54:38.3542196Z compressing debuginfo in: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/libpython3.13.so.1.0
+2026-10-21T14:54:53.7304435Z processing: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/libpython3.13.so.1.0
+2026-10-21T14:54:53.7306010Z [39] .debug_aranges compressed -> .zdebug_aranges (144 => 68 47.22%)
+2026-10-21T14:54:53.7306812Z [41] .debug_info compressed -> .zdebug_info (54258139 => 25795918 47.54%)
+2026-10-21T14:54:53.7307439Z [43] .debug_abbrev compressed -> .zdebug_abbrev (402678 => 78060 19.39%)
+2026-10-21T14:54:53.7308069Z [44] .debug_line compressed -> .zdebug_line (5465251 => 1687495 30.88%)
+2026-10-21T14:54:53.7308690Z [46] .debug_frame compressed -> .zdebug_frame (240 => 126 52.50%)
+2026-10-21T14:54:53.7309269Z [48] .debug_str compressed -> .zdebug_str (546579 => 154322 28.23%)
+2026-10-21T14:54:53.7309844Z [49] .debug_loc compressed -> .zdebug_loc (21474324 => 3069933 14.30%)
+2026-10-21T14:54:53.7310452Z [51] .debug_ranges compressed -> .zdebug_ranges (4043984 => 622356 15.39%)
+2026-10-21T14:54:53.7311074Z [53] .debug_line_str compressed -> .zdebug_line_str (102 => 83 81.37%)
+2026-10-21T14:54:53.7311705Z [54] .debug_loclists compressed -> .zdebug_loclists (1816 => 1104 60.79%)
+2026-10-21T14:54:53.7312329Z [56] .debug_rnglists compressed -> .zdebug_rnglists (112 => 97 86.61%)
+2026-10-21T14:54:53.7312804Z [59] Updating section string table
+2026-10-21T14:54:53.7331419Z stripping /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/libpython3.13.so.1.0 to /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/lib/debug/extra/WorkBuddy/resources/runtime/python/lib/libpython3.13.so.1.0.debug
+2026-10-21T14:54:55.2047371Z compressing debuginfo in: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/libpython3.13.so
+2026-10-21T14:55:10.5407451Z processing: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/libpython3.13.so
+2026-10-21T14:55:10.5409057Z [39] .debug_aranges compressed -> .zdebug_aranges (144 => 68 47.22%)
+2026-10-21T14:55:10.5410141Z [41] .debug_info compressed -> .zdebug_info (54258139 => 25795918 47.54%)
+2026-10-21T14:55:10.5411001Z [43] .debug_abbrev compressed -> .zdebug_abbrev (402678 => 78060 19.39%)
+2026-10-21T14:55:10.5411636Z [44] .debug_line compressed -> .zdebug_line (5465251 => 1687495 30.88%)
+2026-10-21T14:55:10.5412243Z [46] .debug_frame compressed -> .zdebug_frame (240 => 126 52.50%)
+2026-10-21T14:55:10.5412819Z [48] .debug_str compressed -> .zdebug_str (546579 => 154322 28.23%)
+2026-10-21T14:55:10.5414024Z [49] .debug_loc compressed -> .zdebug_loc (21474324 => 3069933 14.30%)
+2026-10-21T14:55:10.5414844Z [51] .debug_ranges compressed -> .zdebug_ranges (4043984 => 622356 15.39%)
+2026-10-21T14:55:10.5415477Z [53] .debug_line_str compressed -> .zdebug_line_str (102 => 83 81.37%)
+2026-10-21T14:55:10.5416213Z [54] .debug_loclists compressed -> .zdebug_loclists (1816 => 1104 60.79%)
+2026-10-21T14:55:10.5416841Z [56] .debug_rnglists compressed -> .zdebug_rnglists (112 => 97 86.61%)
+2026-10-21T14:55:10.5417355Z [59] Updating section string table
+2026-10-21T14:55:10.5432663Z stripping /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/libpython3.13.so to /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/lib/debug/extra/WorkBuddy/resources/runtime/python/lib/libpython3.13.so.debug
+2026-10-21T14:55:11.1600862Z compressing debuginfo in: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/libpython3.so
+2026-10-21T14:55:11.1620005Z processing: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/libpython3.so
+2026-10-21T14:55:11.1621405Z Nothing to do.
+2026-10-21T14:55:11.1623381Z stripping /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/libpython3.so to /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/lib/debug/extra/WorkBuddy/resources/runtime/python/lib/libpython3.so.debug
+2026-10-21T14:55:11.1685624Z compressing debuginfo in: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/libtcl9.0.so
+2026-10-21T14:55:11.1740667Z processing: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/libtcl9.0.so
+2026-10-21T14:55:11.1741882Z [25] .debug_aranges compressed -> .zdebug_aranges (48 => 39 81.25%)
+2026-10-21T14:55:11.1742645Z [26] .debug_info compressed -> .zdebug_info (872 => 548 62.84%)
+2026-10-21T14:55:11.1743176Z [27] .debug_abbrev compressed -> .zdebug_abbrev (344 => 222 64.53%)
+2026-10-21T14:55:11.1744015Z [28] .debug_line compressed -> .zdebug_line (831 => 382 45.97%)
+2026-10-21T14:55:11.1744503Z [29] .debug_str compressed -> .zdebug_str (434 => 269 61.98%)
+2026-10-21T14:55:11.1744989Z [30] .debug_line_str compressed -> .zdebug_line_str (102 => 83 81.37%)
+2026-10-21T14:55:11.1745534Z [31] .debug_loclists compressed -> .zdebug_loclists (828 => 557 67.27%)
+2026-10-21T14:55:11.1746025Z [32] .debug_rnglists NOT compressed, wouldn't be smaller
+2026-10-21T14:55:11.1746407Z [35] Updating section string table
+2026-10-21T14:55:11.1748064Z stripping /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/libtcl9.0.so to /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/lib/debug/extra/WorkBuddy/resources/runtime/python/lib/libtcl9.0.so.debug
+2026-10-21T14:55:11.1840916Z compressing debuginfo in: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/libtcl9tk9.0.so
+2026-10-21T14:55:11.1860845Z processing: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/libtcl9tk9.0.so
+2026-10-21T14:55:11.1862677Z Nothing to do.
+2026-10-21T14:55:11.1865083Z stripping /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/libtcl9tk9.0.so to /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/lib/debug/extra/WorkBuddy/resources/runtime/python/lib/libtcl9tk9.0.so.debug
+2026-10-21T14:55:11.1968400Z compressing debuginfo in: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/python3.13/lib-dynload/_ctypes_test.cpython-313-x86_64-linux-gnu.so
+2026-10-21T14:55:11.2042315Z processing: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/python3.13/lib-dynload/_ctypes_test.cpython-313-x86_64-linux-gnu.so
+2026-10-21T14:55:11.2044878Z [32] .debug_info compressed -> .zdebug_info (11006 => 5163 46.91%)
+2026-10-21T14:55:11.2046268Z [34] .debug_abbrev compressed -> .zdebug_abbrev (922 => 424 45.99%)
+2026-10-21T14:55:11.2047376Z [35] .debug_line compressed -> .zdebug_line (4409 => 2223 50.42%)
+2026-10-21T14:55:11.2048356Z [37] .debug_str compressed -> .zdebug_str (3285 => 1352 41.16%)
+2026-10-21T14:55:11.2049470Z [38] .debug_loc compressed -> .zdebug_loc (9580 => 1636 17.08%)
+2026-10-21T14:55:11.2050548Z [40] .debug_ranges compressed -> .zdebug_ranges (1600 => 379 23.69%)
+2026-10-21T14:55:11.2051231Z [44] Updating section string table
+2026-10-21T14:55:11.2053251Z stripping /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/python3.13/lib-dynload/_ctypes_test.cpython-313-x86_64-linux-gnu.so to /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/lib/debug/extra/WorkBuddy/resources/runtime/python/lib/python3.13/lib-dynload/_ctypes_test.cpython-313-x86_64-linux-gnu.so.debug
+2026-10-21T14:55:11.2123423Z compressing debuginfo in: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/python3.13/lib-dynload/_dbm.cpython-313-x86_64-linux-gnu.so
+2026-10-21T14:55:11.2286100Z processing: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/python3.13/lib-dynload/_dbm.cpython-313-x86_64-linux-gnu.so
+2026-10-21T14:55:11.2310169Z [34] .debug_info compressed -> .zdebug_info (35303 => 17644 49.98%)
+2026-10-21T14:55:11.2311061Z [36] .debug_abbrev compressed -> .zdebug_abbrev (1032 => 471 45.64%)
+2026-10-21T14:55:11.2311905Z [37] .debug_line compressed -> .zdebug_line (3311 => 1954 59.02%)
+2026-10-21T14:55:11.2312591Z [39] .debug_str compressed -> .zdebug_str (16060 => 5888 36.66%)
+2026-10-21T14:55:11.2313211Z [40] .debug_loc compressed -> .zdebug_loc (12518 => 2088 16.68%)
+2026-10-21T14:55:11.2314215Z [42] .debug_ranges compressed -> .zdebug_ranges (576 => 186 32.29%)
+2026-10-21T14:55:11.2314867Z [46] Updating section string table
+2026-10-21T14:55:11.2317014Z stripping /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/python3.13/lib-dynload/_dbm.cpython-313-x86_64-linux-gnu.so to /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/lib/debug/extra/WorkBuddy/resources/runtime/python/lib/python3.13/lib-dynload/_dbm.cpython-313-x86_64-linux-gnu.so.debug
+2026-10-21T14:55:11.2408965Z compressing debuginfo in: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/python3.13/lib-dynload/_tkinter.cpython-313-x86_64-linux-gnu.so
+2026-10-21T14:55:11.3099364Z processing: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/python3.13/lib-dynload/_tkinter.cpython-313-x86_64-linux-gnu.so
+2026-10-21T14:55:11.3101484Z [32] .debug_info compressed -> .zdebug_info (116306 => 53199 45.74%)
+2026-10-21T14:55:11.3102235Z [34] .debug_abbrev compressed -> .zdebug_abbrev (1848 => 757 40.96%)
+2026-10-21T14:55:11.3102922Z [35] .debug_line compressed -> .zdebug_line (20765 => 9294 44.76%)
+2026-10-21T14:55:11.3103812Z [37] .debug_str compressed -> .zdebug_str (37378 => 12893 34.49%)
+2026-10-21T14:55:11.3104812Z [38] .debug_loc compressed -> .zdebug_loc (61084 => 9151 14.98%)
+2026-10-21T14:55:11.3105779Z [40] .debug_ranges compressed -> .zdebug_ranges (7344 => 1559 21.23%)
+2026-10-21T14:55:11.3106363Z [44] Updating section string table
+2026-10-21T14:55:11.3108937Z stripping /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/python3.13/lib-dynload/_tkinter.cpython-313-x86_64-linux-gnu.so to /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/lib/debug/extra/WorkBuddy/resources/runtime/python/lib/python3.13/lib-dynload/_tkinter.cpython-313-x86_64-linux-gnu.so.debug
+2026-10-21T14:55:11.3219739Z compressing debuginfo in: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/thread3.0.4/libtcl9thread3.0.4.so
+2026-10-21T14:55:11.3240082Z processing: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/thread3.0.4/libtcl9thread3.0.4.so
+2026-10-21T14:55:11.3241410Z Nothing to do.
+2026-10-21T14:55:11.3246127Z stripping /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/extra/WorkBuddy/resources/runtime/python/lib/thread3.0.4/libtcl9thread3.0.4.so to /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files/lib/debug/extra/WorkBuddy/resources/runtime/python/lib/thread3.0.4/libtcl9thread3.0.4.so.debug
+2026-10-21T14:55:12.2994408Z Committing stage build-workbuddy to cache
+2026-10-21T14:55:21.0984320Z Cleaning up
+2026-10-21T14:55:21.0994929Z Running appstreamcli compose
+2026-10-21T14:55:21.1523236Z Only accepting components: com.tencent.WorkBuddy, com.tencent.WorkBuddy.desktop
+2026-10-21T14:55:21.1524318Z Processing directory: /__w/workbuddy-flatpak/workbuddy-flatpak/.build-flatpak/files
+2026-10-21T14:55:21.1524870Z Composing metadata...
+2026-10-21T14:55:21.3017170Z Success!
+2026-10-21T14:55:21.3062936Z Committing stage cleanup to cache
+2026-10-21T14:55:29.7817476Z Finishing app
+2026-10-21T14:55:29.7942995Z Exporting share/applications/com.tencent.WorkBuddy.desktop
+2026-10-21T14:55:29.7946224Z Exporting share/icons/hicolor/512x512/apps/com.tencent.WorkBuddy.png
+2026-10-21T14:55:29.7949346Z Exporting share/metainfo/com.tencent.WorkBuddy.metainfo.xml
+2026-10-21T14:55:29.8025239Z Please review the exported files and the metadata
+2026-10-21T14:55:29.8043393Z Committing stage finish to cache
+2026-10-21T14:55:38.2810507Z Exporting com.tencent.WorkBuddy to repo
+2026-10-21T14:56:35.6533984Z Commit: e2af978d91dee51685a0292c48c032a3d40f36c6af025d127967ef8160c4791f
+2026-10-21T14:56:35.6534798Z Metadata Total: 2995
+2026-10-21T14:56:35.6535235Z Metadata Written: 1459
+2026-10-21T14:56:35.6535674Z Content Total: 9656
+2026-10-21T14:56:35.6536110Z Content Written: 8021
+2026-10-21T14:56:35.6536662Z Content Bytes Written: 1312883944 (1.3?GB)
+2026-10-21T14:56:35.6574494Z Exporting com.tencent.WorkBuddy.Debug to repo
+2026-10-21T14:56:51.1967548Z Commit: 5f192275bbd9585cf783adaf787edf6e92e59fd2f9ac6b14fa18e1b276443d8b
+2026-10-21T14:56:51.1968180Z Metadata Total: 53
+2026-10-21T14:56:51.1968483Z Metadata Written: 26
+2026-10-21T14:56:51.1968788Z Content Total: 21
+2026-10-21T14:56:51.1969075Z Content Written: 18
+2026-10-21T14:56:51.1969397Z Content Bytes Written: 259893510 (259.9?MB)
+2026-10-21T14:56:51.1981229Z Pruning cache
+2026-10-21T14:56:51.3001225Z [1;34m==>[0m 已导出到 /__w/workbuddy-flatpak/workbuddy-flatpak/repo
+2026-10-21T14:56:51.3002056Z [1;34m==>[0m 仓库内分支：
+2026-10-21T14:56:51.3105566Z     app/com.tencent.WorkBuddy/x86_64/stable
+2026-10-21T14:56:51.3106239Z     runtime/com.tencent.WorkBuddy.Debug/x86_64/stable
+2026-10-21T14:56:51.3112223Z     安装：./build.sh install
+2026-10-21T14:56:51.3113286Z     或   ：flatpak remote-add --user --if-not-exists --no-gpg-verify workbuddy-local file:///__w/workbuddy-flatpak/workbuddy-flatpak/repo
+2026-10-21T14:56:51.3114697Z           flatpak install --user workbuddy-local com.tencent.WorkBuddy
+2026-10-21T14:56:51.3193070Z ##[group]Run VERSION=$(grep -oP '(?<=<release version=")[0-9.]+' \
+2026-10-21T14:56:51.3194217Z [36;1mVERSION=$(grep -oP '(?<=<release version=")[0-9.]+' \[0m
+2026-10-21T14:56:51.3194733Z [36;1m          metainfo/com.tencent.WorkBuddy.metainfo.xml | head -1)[0m
+2026-10-21T14:56:51.3195127Z [36;1mARCH=x86_64[0m
+2026-10-21T14:56:51.3195349Z [36;1m[0m
+2026-10-21T14:56:51.3195578Z [36;1mecho "--- 仓库内分支 ---"[0m
+2026-10-21T14:56:51.3195858Z [36;1mostree --repo=repo refs[0m
+2026-10-21T14:56:51.3196123Z [36;1m[0m
+2026-10-21T14:56:51.3196345Z [36;1m# 取实际导出的应用分支，避免硬编码 stable/master 不匹配[0m
+2026-10-21T14:56:51.3196812Z [36;1mBRANCH=$(ostree --repo=repo refs | sed -n "s#^app/$APP_ID/$ARCH/##p" | head -1)[0m
+2026-10-21T14:56:51.3197333Z [36;1m[ -n "$BRANCH" ] || { echo "仓库里找不到 $APP_ID 的分支"; exit 1; }[0m
+2026-10-21T14:56:51.3197689Z [36;1mecho "使用分支：$BRANCH"[0m
+2026-10-21T14:56:51.3197932Z [36;1m[0m
+2026-10-21T14:56:51.3198717Z [36;1mflatpak build-bundle --arch=$ARCH --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo \[0m
+2026-10-21T14:56:51.3199368Z [36;1m  repo "WorkBuddy-${VERSION}-${ARCH}.flatpak" "$APP_ID" "$BRANCH"[0m
+2026-10-21T14:56:51.3199763Z [36;1mls -lh *.flatpak[0m
+2026-10-21T14:56:51.3200039Z [36;1mecho "VERSION=$VERSION" >> "$GITHUB_ENV"[0m
+2026-10-21T14:56:51.3200447Z shell: sh -e {0}
+2026-10-21T14:56:51.3200654Z env:
+2026-10-21T14:56:51.3200859Z   APP_ID: com.tencent.WorkBuddy
+2026-10-21T14:56:51.3201440Z   RPM_URL: https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/WorkBuddy-linux-x64-rpm-5.6.2.40046327-c7b525f3.rpm
+2026-10-21T14:56:51.3202051Z ##[endgroup]
+2026-10-21T14:56:51.3713011Z --- 仓库内分支 ---
+2026-10-21T14:56:51.3802736Z app/com.tencent.WorkBuddy/x86_64/stable
+2026-10-21T14:56:51.3804035Z runtime/com.tencent.WorkBuddy.Debug/x86_64/stable
+2026-10-21T14:56:51.3908592Z 使用分支：stable
+2026-10-21T15:05:41.0408957Z -rw-r--r-- 1 root root 346M Oct 21 15:05 WorkBuddy-5.6.2-x86_64.flatpak
+2026-10-21T15:05:41.0486723Z ##[group]Run flatpak remote-add --if-not-exists --no-gpg-verify local "file://$PWD/repo"
+2026-10-21T15:05:41.0487432Z [36;1mflatpak remote-add --if-not-exists --no-gpg-verify local "file://$PWD/repo"[0m
+2026-10-21T15:05:41.0487979Z [36;1mflatpak install -y --noninteractive --reinstall local "$APP_ID"[0m
+2026-10-21T15:05:41.0488352Z [36;1m[0m
+2026-10-21T15:05:41.0488627Z [36;1mAPP_ROOT="$(flatpak info --show-location "$APP_ID")/files"[0m
+2026-10-21T15:05:41.0488988Z [36;1mecho "APP_ROOT=$APP_ROOT"[0m
+2026-10-21T15:05:41.0489270Z [36;1mecho "--- 应用信息 ---"[0m
+2026-10-21T15:05:41.0489543Z [36;1mflatpak info "$APP_ID" | head -20[0m
+2026-10-21T15:05:41.0489814Z [36;1m[0m
+2026-10-21T15:05:41.0490002Z [36;1mecho "--- 关键文件校验 ---"[0m
+2026-10-21T15:05:41.0490242Z [36;1mfail=0[0m
+2026-10-21T15:05:41.0490436Z [36;1mfor f in \[0m
+2026-10-21T15:05:41.0490681Z [36;1m  "$APP_ROOT/extra/WorkBuddy/workbuddy" \[0m
+2026-10-21T15:05:41.0491079Z [36;1m  "$APP_ROOT/extra/WorkBuddy/resources/app.asar" \[0m
+2026-10-21T15:05:41.0491562Z [36;1m  "$APP_ROOT/extra/WorkBuddy/resources/app.asar.unpacked/cli/bin/codebuddy" \[0m
+2026-10-21T15:05:41.0492081Z [36;1m  "$APP_ROOT/extra/WorkBuddy/resources/runtime/node/bin/node" \[0m
+2026-10-21T15:05:41.0492461Z [36;1m  "$APP_ROOT/bin/workbuddy" \[0m
+2026-10-21T15:05:41.0492782Z [36;1m  "$APP_ROOT/share/applications/$APP_ID.desktop" \[0m
+2026-10-21T15:05:41.0493154Z [36;1m  "$APP_ROOT/share/metainfo/$APP_ID.metainfo.xml" \[0m
+2026-10-21T15:05:41.0493842Z [36;1m  "$APP_ROOT/share/icons/hicolor/512x512/apps/$APP_ID.png" ; do[0m
+2026-10-21T15:05:41.0494338Z [36;1m  if [ -e "$f" ]; then echo "  OK   $f"; else echo "  MISS $f"; fail=1; fi[0m
+2026-10-21T15:05:41.0494706Z [36;1mdone[0m
+2026-10-21T15:05:41.0494916Z [36;1m[ "$fail" = "0" ] || exit 1[0m
+2026-10-21T15:05:41.0495162Z [36;1m[0m
+2026-10-21T15:05:41.0495358Z [36;1mecho "--- 可执行位 ---"[0m
+2026-10-21T15:05:41.0495741Z [36;1mtest -x "$APP_ROOT/extra/WorkBuddy/workbuddy" || { echo "主程序不可执行"; exit 1; }[0m
+2026-10-21T15:05:41.0496283Z [36;1mtest -x "$APP_ROOT/bin/workbuddy"              || { echo "启动器不可执行"; exit 1; }[0m
+2026-10-21T15:05:41.0496677Z [36;1mecho "通过"[0m
+2026-10-21T15:05:41.0497084Z shell: sh -e {0}
+2026-10-21T15:05:41.0497297Z env:
+2026-10-21T15:05:41.0497498Z   APP_ID: com.tencent.WorkBuddy
+2026-10-21T15:05:41.0498054Z   RPM_URL: https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/WorkBuddy-linux-x64-rpm-5.6.2.40046327-c7b525f3.rpm
+2026-10-21T15:05:41.0498614Z   VERSION: 5.6.2
+2026-10-21T15:05:41.0498819Z ##[endgroup]
+2026-10-21T15:05:41.4887714Z Installing app/com.tencent.WorkBuddy/x86_64/stable
+2026-10-21T15:05:49.1270802Z APP_ROOT=/var/lib/flatpak/app/com.tencent.WorkBuddy/x86_64/stable/e2af978d91dee51685a0292c48c032a3d40f36c6af025d127967ef8160c4791f/files
+2026-10-21T15:05:49.1271962Z --- 应用信息 ---
+2026-10-21T15:05:49.1400505Z 
+2026-10-21T15:05:49.1401080Z WorkBuddy - AI agent desktop application
+2026-10-21T15:05:49.1401546Z 
+2026-10-21T15:05:49.1402329Z           ID: com.tencent.WorkBuddy
+2026-10-21T15:05:49.1402934Z          Ref: app/com.tencent.WorkBuddy/x86_64/stable
+2026-10-21T15:05:49.1403454Z         Arch: x86_64
+2026-10-21T15:05:49.1404109Z       Branch: stable
+2026-10-21T15:05:49.1404518Z      Version: 5.6.2
+2026-10-21T15:05:49.1404961Z      License: LicenseRef-proprietary
+2026-10-21T15:05:49.1405451Z       Origin: local
+2026-10-21T15:05:49.1405871Z   Collection: 
+2026-10-21T15:05:49.1406208Z Installation: system
+2026-10-21T15:05:49.1406598Z    Installed: 1.3?GB
+2026-10-21T15:05:49.1407015Z      Runtime: org.freedesktop.Platform/x86_64/25.08
+2026-10-21T15:05:49.1407603Z          Sdk: org.freedesktop.Sdk/x86_64/25.08
+2026-10-21T15:05:49.1407953Z 
+2026-10-21T15:05:49.1408329Z       Commit: e2af978d91dee51685a0292c48c032a3d40f36c6af025d127967ef8160c4791f
+2026-10-21T15:05:49.1409082Z      Subject: Export com.tencent.WorkBuddy
+2026-10-21T15:05:49.1409524Z         Date: 2026-10-21 14:56:35 +0000
+2026-10-21T15:05:49.1410225Z --- 关键文件校验 ---
+2026-10-21T15:05:49.1411666Z   MISS /var/lib/flatpak/app/com.tencent.WorkBuddy/x86_64/stable/e2af978d91dee51685a0292c48c032a3d40f36c6af025d127967ef8160c4791f/files/extra/WorkBuddy/workbuddy
+2026-10-21T15:05:49.1413889Z   MISS /var/lib/flatpak/app/com.tencent.WorkBuddy/x86_64/stable/e2af978d91dee51685a0292c48c032a3d40f36c6af025d127967ef8160c4791f/files/extra/WorkBuddy/resources/app.asar
+2026-10-21T15:05:49.1416282Z   MISS /var/lib/flatpak/app/com.tencent.WorkBuddy/x86_64/stable/e2af978d91dee51685a0292c48c032a3d40f36c6af025d127967ef8160c4791f/files/extra/WorkBuddy/resources/app.asar.unpacked/cli/bin/codebuddy
+2026-10-21T15:05:49.1418555Z   MISS /var/lib/flatpak/app/com.tencent.WorkBuddy/x86_64/stable/e2af978d91dee51685a0292c48c032a3d40f36c6af025d127967ef8160c4791f/files/extra/WorkBuddy/resources/runtime/node/bin/node
+2026-10-21T15:05:49.1420442Z   OK   /var/lib/flatpak/app/com.tencent.WorkBuddy/x86_64/stable/e2af978d91dee51685a0292c48c032a3d40f36c6af025d127967ef8160c4791f/files/bin/workbuddy
+2026-10-21T15:05:49.1422358Z   OK   /var/lib/flatpak/app/com.tencent.WorkBuddy/x86_64/stable/e2af978d91dee51685a0292c48c032a3d40f36c6af025d127967ef8160c4791f/files/share/applications/com.tencent.WorkBuddy.desktop
+2026-10-21T15:05:49.1424843Z   OK   /var/lib/flatpak/app/com.tencent.WorkBuddy/x86_64/stable/e2af978d91dee51685a0292c48c032a3d40f36c6af025d127967ef8160c4791f/files/share/metainfo/com.tencent.WorkBuddy.metainfo.xml
+2026-10-21T15:05:49.1427218Z   OK   /var/lib/flatpak/app/com.tencent.WorkBuddy/x86_64/stable/e2af978d91dee51685a0292c48c032a3d40f36c6af025d127967ef8160c4791f/files/share/icons/hicolor/512x512/apps/com.tencent.WorkBuddy.png
+2026-10-21T15:05:49.1462291Z ##[error]Process completed with exit code 1.
+2026-10-21T15:05:49.1632523Z Post job cleanup.
+2026-10-21T15:05:49.1639888Z ##[command]/usr/bin/docker exec  3438bb50bf912343b3972d96f96d12ca6bf407791bcc658d3294fe68b259ef76 sh -c "cat /etc/*release | grep ^ID"
+2026-10-21T15:05:49.4867010Z [command]/usr/sbin/git version
+2026-10-21T15:05:49.4921576Z git version 2.49.0
+2026-10-21T15:05:49.4973253Z Temporarily overriding HOME='/__w/_temp/e8d738f2-dcfd-41d9-be4f-56c872563e7f' before making global git config changes
+2026-10-21T15:05:49.4974755Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-21T15:05:49.4982211Z [command]/usr/sbin/git config --global --add safe.directory /__w/workbuddy-flatpak/workbuddy-flatpak
+2026-10-21T15:05:49.5025113Z [command]/usr/sbin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-21T15:05:49.5069109Z [command]/usr/sbin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-21T15:05:49.5398952Z [command]/usr/sbin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-21T15:05:49.5427773Z http.https://github.com/.extraheader
+2026-10-21T15:05:49.5441460Z [command]/usr/sbin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-21T15:05:49.5478889Z [command]/usr/sbin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-21T15:05:49.5837260Z [command]/usr/sbin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-21T15:05:49.5847363Z [command]/usr/sbin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-21T15:05:49.6381941Z Stop and remove container: d67711f7bf1649b082dbd2133eb71bbb_ghcrioflathubinfraflatpakgithubactionsgnome46_134ab7
+2026-10-21T15:05:49.6387005Z ##[command]/usr/bin/docker rm --force 3438bb50bf912343b3972d96f96d12ca6bf407791bcc658d3294fe68b259ef76
+2026-10-21T15:05:55.5818008Z 3438bb50bf912343b3972d96f96d12ca6bf407791bcc658d3294fe68b259ef76
+2026-10-21T15:05:55.5856062Z Remove container network: github_network_c6a3de0ade2844f7b95a24e71c637ce3
+2026-10-21T15:05:55.5860991Z ##[command]/usr/bin/docker network rm github_network_c6a3de0ade2844f7b95a24e71c637ce3
+2026-10-21T15:05:55.6790157Z github_network_c6a3de0ade2844f7b95a24e71c637ce3
+2026-10-21T15:05:55.6877096Z Evaluate and set job outputs
+2026-10-21T15:05:55.6882551Z Cleaning up orphan processes
+2026-10-21T15:05:55.7305147Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/cache@v4, actions/checkout@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
