@@ -1,0 +1,177 @@
+name: Build Flatpak
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      rpm_url:
+        description: '要打包的 RPM 下载地址'
+        required: false
+        default: 'https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/WorkBuddy-linux-x64-rpm-5.6.2.40046327-c7b525f3.rpm'
+
+env:
+  APP_ID: com.tencent.WorkBuddy
+  RPM_URL: ${{ inputs.rpm_url || 'https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/WorkBuddy-linux-x64-rpm-5.6.2.40046327-c7b525f3.rpm' }}
+
+jobs:
+  build:
+    name: Build .flatpak
+    runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-46
+      options: --privileged
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: 显示环境
+        run: |
+          flatpak --version
+          flatpak-builder --version
+          df -h /
+
+      - name: 安装打包依赖
+        run: |
+          apt-get update -qq
+          apt-get install -y -qq rpm2cpio cpio
+
+      - name: 缓存 RPM 源包
+        id: cache-rpm
+        uses: actions/cache@v4
+        with:
+          path: .cache-rpm
+          key: rpm-${{ hashFiles('**/com.tencent.WorkBuddy.yaml') }}-${{ env.RPM_URL }}
+
+      - name: 下载 RPM
+        env:
+          CACHE_HIT: ${{ steps.cache-rpm.outputs.cache-hit }}
+        run: |
+          mkdir -p .cache-rpm
+          if [ "$CACHE_HIT" = "true" ] && ls .cache-rpm/*.rpm >/dev/null 2>&1; then
+            echo "复用缓存的 RPM"
+          else
+            curl -fL --retry 3 --retry-delay 3 -o .cache-rpm/workbuddy.rpm "$RPM_URL"
+          fi
+          ls -lh .cache-rpm/
+          file .cache-rpm/workbuddy.rpm
+
+      - name: 安装 runtime 与 BaseApp
+        run: |
+          flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+          flatpak install --noninteractive -y flathub \
+            org.freedesktop.Platform/x86_64/25.08 \
+            org.freedesktop.Platform.Locale/x86_64/25.08 \
+            org.freedesktop.Sdk/x86_64/25.08 \
+            org.electronjs.Electron2.BaseApp/x86_64/25.08
+
+      - name: 校验清单与元数据
+        run: |
+          desktop-file-validate com.tencent.WorkBuddy.desktop
+          appstreamcli validate --no-net metainfo/com.tencent.WorkBuddy.metainfo.xml
+          python3 -c "import yaml,sys; yaml.safe_load(open('com.tencent.WorkBuddy.yaml')); print('yaml ok')"
+
+      - name: 构建
+        env:
+          SKIP_DEPS: 1
+          RPM: ${{ github.workspace }}/.cache-rpm/workbuddy.rpm
+          FLATPAK_USER_DIR: ${{ github.workspace }}/.flatpak-user
+        run: |
+          # 容器内 flatpak 需要能写自己的安装目录
+          mkdir -p "$FLATPAK_USER_DIR"
+          ./build.sh
+
+      - name: 打包成单文件 .flatpak
+        run: |
+          VERSION=$(grep -oP '(?<=<release version=")[0-9.]+' \
+                    metainfo/com.tencent.WorkBuddy.metainfo.xml | head -1)
+          ARCH=x86_64
+          flatpak build-bundle --arch=$ARCH repo \
+            "WorkBuddy-${VERSION}-${ARCH}.flatpak" "$APP_ID" stable
+          ls -lh *.flatpak
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+
+      - name: 冒烟测试（校验安装后的文件布局）
+        run: |
+          export FLATPAK_USER_DIR="$PWD/.flatpak-user"
+          flatpak remote-add --user --if-not-exists --no-gpg-verify local "file://$PWD/repo"
+          flatpak install --user -y --noninteractive --reinstall local "$APP_ID"
+
+          APP_ROOT="$FLATPAK_USER_DIR/app/$APP_ID/current/active"
+          echo "--- 应用信息 ---"
+          flatpak info --user "$APP_ID" | head -20
+
+          echo "--- 关键文件校验 ---"
+          for f in \
+            "$APP_ROOT/files/extra/WorkBuddy/workbuddy" \
+            "$APP_ROOT/files/extra/WorkBuddy/resources/app.asar" \
+            "$APP_ROOT/files/extra/WorkBuddy/resources/app.asar.unpacked/cli/bin/codebuddy" \
+            "$APP_ROOT/files/extra/WorkBuddy/resources/runtime/node/bin/node" \
+            "$APP_ROOT/files/bin/workbuddy" \
+            "$APP_ROOT/files/share/applications/$APP_ID.desktop" \
+            "$APP_ROOT/files/share/metainfo/$APP_ID.metainfo.xml" \
+            "$APP_ROOT/files/share/icons/hicolor/512x512/apps/$APP_ID.png" ; do
+            if [ -e "$f" ]; then
+              echo "  OK   $f"
+            else
+              echo "  MISS $f"; exit 1
+            fi
+          done
+
+          echo "--- 可执行位 ---"
+          test -x "$APP_ROOT/files/extra/WorkBuddy/workbuddy" || { echo "主程序不可执行"; exit 1; }
+          test -x "$APP_ROOT/files/bin/workbuddy"            || { echo "启动器不可执行"; exit 1; }
+          echo "通过"
+
+      - name: 上传构建产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: WorkBuddy-Flatpak-${{ env.VERSION }}
+          path: '*.flatpak'
+          retention-days: 30
+
+      - name: 读取版本号
+        id: ver
+        run: echo "version=${{ env.VERSION }}" >> "$GITHUB_OUTPUT"
+
+    outputs:
+      version: ${{ steps.ver.outputs.version }}
+
+  release:
+    name: 发布到 Release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - name: 下载构建产物
+        uses: actions/download-artifact@v4
+        with:
+          name: WorkBuddy-Flatpak-${{ needs.build.outputs.version }}
+          path: dist
+
+      - name: 创建 Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.build.outputs.version }}
+          name: WorkBuddy Flatpak v${{ needs.build.outputs.version }}
+          body: |
+            WorkBuddy ${{ needs.build.outputs.version }} 的 Flatpak 打包。
+
+            ## 安装
+
+            ```bash
+            flatpak install --user ./WorkBuddy-${{ needs.build.outputs.version }}-x86_64.flatpak
+            flatpak run com.tencent.WorkBuddy
+            ```
+
+            应用包由官方 RPM 重新打包，未做任何代码修改。
+          files: dist/*.flatpak
+          draft: false
+          prerelease: false

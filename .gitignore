@@ -1,0 +1,20 @@
+# 构建产物
+.build-flatpak/
+.flatpak-builder/
+repo/
+build-dir/
+build/
+.source/
+
+# RPM 源包（由 CI 或本地脚本按 URL 下载）
+*.rpm
+
+# 编辑器 / 系统
+.Trash-*
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Agent 工作区数据
+.workbuddy/

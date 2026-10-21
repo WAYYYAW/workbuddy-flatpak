@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.tencent.WorkBuddy</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>LicenseRef-proprietary</project_license>
+  <name>WorkBuddy</name>
+  <summary>AI agent desktop application</summary>
+  <summary xml:lang="zh_CN">AI 智能体桌面应用</summary>
+
+  <description>
+    <p>
+      WorkBuddy is a desktop AI agent workspace. It bundles an agent runtime,
+      built-in skills, MCP connectors and a document processing engine so that
+      the assistant can research, write, analyse data and produce office
+      documents directly on your machine.
+    </p>
+    <p xml:lang="zh_CN">
+      WorkBuddy 是一款桌面 AI 智能体工作台，内置智能体运行时、技能库、MCP 连接器
+      与文档处理引擎，可直接在本地完成检索、写作、数据分析与 Office 文档生成。
+    </p>
+  </description>
+
+  <launchable type="desktop-id">com.tencent.WorkBuddy.desktop</launchable>
+
+  <url type="homepage">https://www.workbuddy.cn</url>
+
+  <developer id="com.tencent">
+    <name>Tencent Technology (Shenzhen) Company Limited</name>
+  </developer>
+
+  <content_rating type="oars-1.1"/>
+
+  <categories>
+    <category>Development</category>
+    <category>Utility</category>
+  </categories>
+
+  <releases>
+    <release version="5.6.2" date="2026-09-30"/>
+  </releases>
+</component>

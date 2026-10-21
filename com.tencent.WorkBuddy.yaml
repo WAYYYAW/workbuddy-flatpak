@@ -1,0 +1,65 @@
+app-id: com.tencent.WorkBuddy
+runtime: org.freedesktop.Platform
+runtime-version: '25.08'
+sdk: org.freedesktop.Sdk
+base: org.electronjs.Electron2.BaseApp
+base-version: '25.08'
+command: workbuddy
+separate-locales: false
+
+finish-args:
+  # --- 图形 / 显示 ---
+  - --share=ipc
+  - --socket=x11
+  - --socket=wayland
+  - --socket=pulseaudio
+  - --device=dri
+  - --device=all
+  # --- 网络 ---
+  - --share=network
+  # --- 桌面集成 ---
+  - --socket=session-bus
+  - --socket=system-bus
+  - --talk-name=org.freedesktop.Notifications
+  - --talk-name=org.freedesktop.portal.Desktop
+  - --talk-name=org.freedesktop.portal.Documents
+  - --talk-name=org.freedesktop.portal.Flatpak
+  - --talk-name=org.kde.StatusNotifierWatcher
+  - --talk-name=org.freedesktop.ScreenSaver
+  - --talk-name=org.gnome.SessionManager
+  - --talk-name=org.freedesktop.secrets
+  - --filesystem=xdg-run/pipewire-0
+  - --filesystem=xdg-run/gvfsd
+  # --- 文件访问 ---
+  # WorkBuddy 的定位是"在你自己机器上干活"：读写项目目录、打开附件、
+  # 调用本地 CLI。因此默认给 home 全域访问；如需收紧可用 Flatseal 调整。
+  - --filesystem=home
+  - --filesystem=/run/media
+  - --filesystem=/mnt
+  - --filesystem=/media
+  # --- 环境 ---
+  - --env=LANG=zh_CN.UTF-8
+  - --env=LC_ALL=zh_CN.UTF-8
+
+modules:
+  - name: workbuddy
+    buildsystem: simple
+    build-commands:
+      # 1. 应用本体 → /app/extra（可原地更新，不计入 ostree 差异优化）
+      - install -d /app/extra
+      - cp -a app /app/extra/WorkBuddy
+      - chmod 0755 /app/extra/WorkBuddy/workbuddy
+      - chmod 0755 /app/extra/WorkBuddy/chrome_crashpad_handler
+      # 2. 入口脚本：GUI / CLI / node 共用
+      - install -Dm755 appfiles/workbuddy.sh      /app/bin/workbuddy
+      - install -Dm755 appfiles/workbuddy-node.sh /app/bin/workbuddy-node
+      # 3. 桌面集成
+      - install -Dm644 com.tencent.WorkBuddy.desktop               /app/share/applications/com.tencent.WorkBuddy.desktop
+      - install -Dm644 icons/workbuddy.png                         /app/share/icons/hicolor/512x512/apps/com.tencent.WorkBuddy.png
+      - install -Dm644 metainfo/com.tencent.WorkBuddy.metainfo.xml /app/share/metainfo/com.tencent.WorkBuddy.metainfo.xml
+      # 4. 清理 Electron 自带的 SwiftShader/Vulkan，BaseApp 已提供
+      - rm -f /app/extra/WorkBuddy/libvk_swiftshader.so
+      - rm -f /app/extra/WorkBuddy/vk_swiftshader_icd.json
+    sources:
+      - type: dir
+        path: .source

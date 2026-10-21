@@ -1,0 +1,17 @@
+[Desktop Entry]
+Name=WorkBuddy
+Name[zh_CN]=WorkBuddy
+GenericName=AI Agent Desktop
+GenericName[zh_CN]=AI 智能体桌面
+Comment=AI Agent desktop application
+Comment[zh_CN]=AI 智能体桌面应用
+Exec=workbuddy %U
+Terminal=false
+Type=Application
+Icon=com.tencent.WorkBuddy
+StartupWMClass=workbuddy
+StartupNotify=true
+Categories=Development;
+Keywords=AI;Agent;Assistant;
+Keywords[zh_CN]=智能体;助手;办公;
+MimeType=x-scheme-handler/workbuddy;
