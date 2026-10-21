@@ -117,6 +117,7 @@ flatpak-builder \
   $FP_ARGS \
   --arch=x86_64 \
   --force-clean \
+  --default-branch=stable \
   --disable-rofiles-fuse \
   --install-deps-from=flathub \
   --repo="$REPO" \
@@ -125,6 +126,10 @@ flatpak-builder \
   "$HERE/$APP_ID.yaml"
 
 blue "已导出到 $REPO"
+if command -v ostree >/dev/null 2>&1; then
+  blue "仓库内分支："
+  ostree --repo="$REPO" refs 2>/dev/null | sed 's/^/    /' || true
+fi
 
 case "${1:-}" in
   install)

@@ -93,8 +93,17 @@ jobs:
           VERSION=$(grep -oP '(?<=<release version=")[0-9.]+' \
                     metainfo/com.tencent.WorkBuddy.metainfo.xml | head -1)
           ARCH=x86_64
-          flatpak build-bundle --arch=$ARCH repo \
-            "WorkBuddy-${VERSION}-${ARCH}.flatpak" "$APP_ID" stable
+
+          echo "--- 仓库内分支 ---"
+          ostree --repo=repo refs
+
+          # 取实际导出的应用分支，避免硬编码 stable/master 不匹配
+          BRANCH=$(ostree --repo=repo refs | sed -n "s#^app/$APP_ID/$ARCH/##p" | head -1)
+          [ -n "$BRANCH" ] || { echo "仓库里找不到 $APP_ID 的分支"; exit 1; }
+          echo "使用分支：$BRANCH"
+
+          flatpak build-bundle --arch=$ARCH --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo \
+            repo "WorkBuddy-${VERSION}-${ARCH}.flatpak" "$APP_ID" "$BRANCH"
           ls -lh *.flatpak
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
 
